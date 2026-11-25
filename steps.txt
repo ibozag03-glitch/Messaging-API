@@ -1,0 +1,2 @@
+1. composer require lexik/jwt-authentication-bundle  //En cas de souci de version version ou de bug rajouter --ignore-platform-reqs
+2. symfony

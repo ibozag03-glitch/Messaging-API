@@ -2,12 +2,24 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\IriFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\QueryParameter;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 #[ApiResource()]
+#[QueryParameter(
+    key: "sender",
+    description: "user sending the message",
+    filter: new IriFilter()
+)]
+#[QueryParameter(
+    key: "reciver",
+    description: "user reciving the message",
+    filter: new IriFilter()
+)]
 class Message
 {
     #[ORM\Id]

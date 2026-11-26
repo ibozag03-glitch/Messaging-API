@@ -1,2 +1,75 @@
+Messaging-API: development steps
+
+//installation des dépendances
+composer require maker orm security api
+
+//Créer la classe responsable de l'authentification des utilisateurs
+Symfony console make:entity User
+
+//Modification/Creéation d'une entité
+Symfony console make:entity User
+
+//Lors de la création ou de la modification de l'Entity User ajoutez les propriétées suivantes:
+propertie name | Type | length | nullable |
+email | string | 180 | no |
+password | string | 255 | no |
+name | string | 255 | no |
+
+Appuyer sur entrer pour valider
+
+/*
+gérer les secrets dans .env.local
+Créer le fichier `.env.local`
+Copiez depuis le fichier `.env` la variable `DATABASE_URL` avec le liens du type de base de donnée que vous utilisez.
+Collez cette variable dans `.env.local`. Assurez vous de modifier dans l'url le nom d'utilisateur, le mot de passe, le nom de la base de données et la version du server que vous utiliser
+*/
+
+//Créer la base de données
+Symfony console doctrine:database:create
+
+//Générer les fichiers migration (Requêtes de creation/modification des tables)
+Symfony console make:migration
+
+//Exécuter les migrations
+Symfony console doctrine:migrations:migrate
+
+//Explain it later(Je sais pas encore à quoi xa sert (T_T') )
+Symfony console doctrine:schema:update
+
+//Créer la class message
+Symfony console make:entity Message
+
+//Lors de la creation de l'Entity Message ajoutez les propriétées suivantes:
+propertie name | Type | length | nullable |
+content | string | 255 | no |
+sentAt | datetime_immmutable | no |
+sender | ManyToOne | User (Il n'y a pas de length à écrire) | no | //A partir de la création de cette proprietée vous allez recevoir 3 questions, les réponses sont 'yes', ensuite 'sentMessage' et 'no' dans cette ordre
+reciver | ManyToOne | User (Il n'y a pas de length à écrire) | no | //A partir de la création de cette proprietée vous allez recevoir 3 questions, les réponses sont 'yes', ensuite 'recivedMessage' et 'no' dans cette ordre
+
+Appuyer sur entrer pour valider
+
+//Rajouter au dessus de la déclaration de la classe User
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ApiResource(
+    operations: [new Post(processor: UserStateProcessor::class), new GetCollection()]
+)]
+
+//Rajouter au dessus de la déclaration de la classe Message
+#[ApiResource()]
+#[QueryParameter(
+    key: "sender",
+    description: "user sending the message",
+    filter: new IriFilter()
+)]
+#[QueryParameter(
+    key: "reciver",
+    description: "user reciving the message",
+    filter: new IriFilter()
+)]
+
+Maintenant Vous êtes à jour en ce qui concerne le code ! Keep Up en suivant le commande et instructions suivantes.
+
 1. composer require lexik/jwt-authentication-bundle  //En cas de souci de version version ou de bug rajouter --ignore-platform-reqs
-2. symfony
+2. symfony console lexik:jwt:generate-keypair

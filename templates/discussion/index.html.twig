@@ -10,5 +10,14 @@
 
 <div class="example-wrapper">
     <h1>{{ controller_name }} list ✅</h1>
+
+    <ul>
+        {% for discussion in discussions %}
+            <li>
+                <a href="{{ path('app_discussion.show', {id: discussion.id}) }}">Discussion with sender {{ discussion.sender.id }} and reciver {{ discussion.receiver.id }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
 </div>
 {% endblock %}

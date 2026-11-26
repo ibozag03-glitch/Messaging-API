@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
     filter: new IriFilter()
 )]
 #[QueryParameter(
-    key: "reciver",
+    key: "receiver",
     description: "user reciving the message",
     filter: new IriFilter()
 )]
@@ -39,7 +39,11 @@ class Message
 
     #[ORM\ManyToOne(inversedBy: 'recievedMessages')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $reciver = null;
+    private ?User $receiver = null;
+
+    #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Discussion $discussion = null;
 
     public function getId(): ?int
     {
@@ -82,14 +86,26 @@ class Message
         return $this;
     }
 
-    public function getReciver(): ?User
+    public function getReceiver(): ?User
     {
-        return $this->reciver;
+        return $this->receiver;
     }
 
-    public function setReciver(?User $reciver): static
+    public function setReceiver(?User $receiver): static
     {
-        $this->reciver = $reciver;
+        $this->receiver = $receiver;
+
+        return $this;
+    }
+
+    public function getDiscussion(): ?Discussion
+    {
+        return $this->discussion;
+    }
+
+    public function setDiscussion(?Discussion $discussion): static
+    {
+        $this->discussion = $discussion;
 
         return $this;
     }

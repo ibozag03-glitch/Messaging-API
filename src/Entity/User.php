@@ -56,7 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Message>
      */
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'reciver')]
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'receiver')]
     private Collection $recievedMessages;
 
     /**
@@ -69,14 +69,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Discussion>
      */
     #[ORM\OneToMany(targetEntity: Discussion::class, mappedBy: 'receiver')]
-    private Collection $receiverDiscussio;
+    private Collection $receiverDiscussion;
 
     public function __construct()
     {
         $this->sentMessages = new ArrayCollection();
         $this->recievedMessages = new ArrayCollection();
         $this->senderDiscussion = new ArrayCollection();
-        $this->receiverDiscussio = new ArrayCollection();
+        $this->receiverDiscussion = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,7 +150,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $data = (array) $this;
         $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
-        
+
         return $data;
     }
 
@@ -220,7 +220,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->recievedMessages->contains($recievedMessage)) {
             $this->recievedMessages->add($recievedMessage);
-            $recievedMessage->setReciver($this);
+            $recievedMessage->setReceiver($this);
         }
 
         return $this;
@@ -230,8 +230,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->recievedMessages->removeElement($recievedMessage)) {
             // set the owning side to null (unless already changed)
-            if ($recievedMessage->getReciver() === $this) {
-                $recievedMessage->setReciver(null);
+            if ($recievedMessage->getReceiver() === $this) {
+                $recievedMessage->setReceiver(null);
             }
         }
 
@@ -271,27 +271,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Discussion>
      */
-    public function getReceiverDiscussio(): Collection
+    public function getReceiverDiscussion(): Collection
     {
-        return $this->receiverDiscussio;
+        return $this->receiverDiscussion;
     }
 
-    public function addReceiverDiscussio(Discussion $receiverDiscussio): static
+    public function addReceiverDiscussion(Discussion $receiverDiscussion): static
     {
-        if (!$this->receiverDiscussio->contains($receiverDiscussio)) {
-            $this->receiverDiscussio->add($receiverDiscussio);
-            $receiverDiscussio->setReceiver($this);
+        if (!$this->receiverDiscussion->contains($receiverDiscussion)) {
+            $this->receiverDiscussion->add($receiverDiscussion);
+            $receiverDiscussion->setReceiver($this);
         }
 
         return $this;
     }
 
-    public function removeReceiverDiscussio(Discussion $receiverDiscussio): static
+    public function removeReceiverDiscussion(Discussion $receiverDiscussion): static
     {
-        if ($this->receiverDiscussio->removeElement($receiverDiscussio)) {
+        if ($this->receiverDiscussion->removeElement($receiverDiscussion)) {
             // set the owning side to null (unless already changed)
-            if ($receiverDiscussio->getReceiver() === $this) {
-                $receiverDiscussio->setReceiver(null);
+            if ($receiverDiscussion->getReceiver() === $this) {
+                $receiverDiscussion->setReceiver(null);
             }
         }
 

@@ -69,7 +69,7 @@ Appuyer sur entrer pour valider
     filter: new IriFilter()
 )]
 
-Maintenant Vous êtes à jour en ce qui concerne le code ! Keep Up en suivant le commande et instructions suivantes.
+Maintenant Vous êtes à jour en ce qui concerne le code vue en cours! Keep Up en suivant le commande et instructions suivantes.
 
 1. composer require lexik/jwt-authentication-bundle  //En cas de souci de version version ou de bug rajouter --ignore-platform-reqs
 2. symfony console lexik:jwt:generate-keypair

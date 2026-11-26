@@ -59,10 +59,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'reciver')]
     private Collection $recievedMessages;
 
+    /**
+     * @var Collection<int, Discussion>
+     */
+    #[ORM\OneToMany(targetEntity: Discussion::class, mappedBy: 'sender')]
+    private Collection $senderDiscussion;
+
+    /**
+     * @var Collection<int, Discussion>
+     */
+    #[ORM\OneToMany(targetEntity: Discussion::class, mappedBy: 'receiver')]
+    private Collection $receiverDiscussio;
+
     public function __construct()
     {
         $this->sentMessages = new ArrayCollection();
         $this->recievedMessages = new ArrayCollection();
+        $this->senderDiscussion = new ArrayCollection();
+        $this->receiverDiscussio = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -218,6 +232,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($recievedMessage->getReciver() === $this) {
                 $recievedMessage->setReciver(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Discussion>
+     */
+    public function getSenderDiscussion(): Collection
+    {
+        return $this->senderDiscussion;
+    }
+
+    public function addSenderDiscussion(Discussion $senderDiscussion): static
+    {
+        if (!$this->senderDiscussion->contains($senderDiscussion)) {
+            $this->senderDiscussion->add($senderDiscussion);
+            $senderDiscussion->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSenderDiscussion(Discussion $senderDiscussion): static
+    {
+        if ($this->senderDiscussion->removeElement($senderDiscussion)) {
+            // set the owning side to null (unless already changed)
+            if ($senderDiscussion->getSender() === $this) {
+                $senderDiscussion->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Discussion>
+     */
+    public function getReceiverDiscussio(): Collection
+    {
+        return $this->receiverDiscussio;
+    }
+
+    public function addReceiverDiscussio(Discussion $receiverDiscussio): static
+    {
+        if (!$this->receiverDiscussio->contains($receiverDiscussio)) {
+            $this->receiverDiscussio->add($receiverDiscussio);
+            $receiverDiscussio->setReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceiverDiscussio(Discussion $receiverDiscussio): static
+    {
+        if ($this->receiverDiscussio->removeElement($receiverDiscussio)) {
+            // set the owning side to null (unless already changed)
+            if ($receiverDiscussio->getReceiver() === $this) {
+                $receiverDiscussio->setReceiver(null);
             }
         }
 
